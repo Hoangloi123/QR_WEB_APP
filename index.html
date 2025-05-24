@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0a8f38;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button.download {
+      background-color: #007bff;
+    }
+
+    canvas {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Trình tạo mã QR_Lợi</h1>
+  <input type="text" id="text" placeholder="Nhập dữ liệu cần mã hóa..." />
+  <br />
+  <button onclick="generateQR()">Tạo mã QR</button>
+  <button class="download" onclick="downloadQR()" id="downloadBtn" style="display: none;">Tải về</button>
+  <br />
+  <canvas id="qrCanvas"></canvas>
+
+  <script>
+    let currentQRData = "";
+
+    function generateQR() {
+      const canvas = document.getElementById("qrCanvas");
+      const text = document.getElementById("text").value.trim();
+
+      if (!text) {
+        alert("Vui lòng nhập dữ liệu.");
+        return;
+      }
+
+      currentQRData = text;
+      QRCode.toCanvas(canvas, text, { width: 250 }, function (error) {
+        if (error) console.error(error);
+        else document.getElementById("downloadBtn").style.display = "inline-block";
+      });
+    }
+
+    function downloadQR() {
+      const canvas = document.getElementById("qrCanvas");
+      const link = document.createElement("a");
+      link.download = "qr_code.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+  </script>
+</body>
+</html>
